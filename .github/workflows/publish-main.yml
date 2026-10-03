@@ -1,7 +1,6 @@
 name: Publish selected npm package (manual)
 
-# This GitHub workflow never runs on push. Release tags are package-specific:
-# setup-openclaw-vX.Y.Z, setup-claude-code-vX.Y.Z, cli-vX.Y.Z.
+# This GitHub workflow never runs on push. Dispatch it from main once per package.
 on:
   workflow_dispatch:
     inputs:
@@ -30,11 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: npm-release
     steps:
-      - name: Check out reviewed release tag
+      - name: Check out dispatched main commit
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.package }}-v${{ inputs.version }}
-          fetch-depth: 0
+          ref: ${{ github.sha }}
           persist-credentials: false
 
       - name: Set up Node and npm
@@ -44,20 +42,16 @@ jobs:
           cache: npm
           registry-url: https://registry.npmjs.org
 
-      - name: Verify tag, version, and selected package
+      - name: Verify main, version, and selected package
         env:
           RELEASE_PACKAGE: ${{ inputs.package }}
           RELEASE_VERSION: ${{ inputs.version }}
         run: |
           node -e '
-            const {execFileSync} = require("node:child_process");
             const {RELEASE_PACKAGE: name, RELEASE_VERSION: version} = process.env;
+            if (process.env.GITHUB_REF !== "refs/heads/main") throw Error("Dispatch releases from main only");
             if (!["cli", "setup-claude-code", "setup-openclaw"].includes(name)) throw Error("Unknown package");
             if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) throw Error("Invalid version");
-            const tag = `${name}-v${version}`;
-            const exact = execFileSync("git", ["describe", "--tags", "--exact-match"], {encoding:"utf8"}).trim();
-            if (exact !== tag) throw Error(`Expected tag ${tag}, found ${exact}`);
-            execFileSync("git", ["merge-base", "--is-ancestor", "HEAD", "origin/main"]);
           '
 
       - name: Install and verify source

@@ -114,6 +114,6 @@ The installers validate the key against the API. Read-only calls such as `social
 - [OpenClaw skill](artifacts/SKILL.md) and [Claude Code skill](claude-code-artifacts/skills/social/SKILL.md): agent instructions and available operations.
 - [Package-specific READMEs](package-readmes/): what each npm package installs or runs.
 
-The repository contains the source for the skills, scripts, CLI, setup packages, and tests. It does not contain the FeedHive server or a hosted OAuth/MCP connection. For a local source build, run `npm ci`, `npm test`, `npm run typecheck`, and `npm run build`. npm releases are manually triggered by maintainers; pushing a commit does not publish a package.
+The repository contains the source for the skills, scripts, CLI, setup packages, and tests. It does not contain the FeedHive server or a hosted OAuth/MCP connection. For a local source build, run `npm ci`, `npm test`, `npm run typecheck`, and `npm run build`. npm releases are manually triggered by maintainers; pushing a commit does not publish a package. To release, run the **Publish selected npm package (manual)** workflow from `main`, select one package, and enter a new npm version. Run it separately for each package; no Git tag is required.
 
 Licensed under the [MIT License](LICENSE). Please report suspected security issues privately to FeedHive rather than posting credentials in an issue.
