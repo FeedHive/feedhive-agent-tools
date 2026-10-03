@@ -1,0 +1,103 @@
+name: Publish selected npm package (manual)
+
+# This GitHub workflow never runs on push. Release tags are package-specific:
+# setup-openclaw-vX.Y.Z, setup-claude-code-vX.Y.Z, cli-vX.Y.Z.
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package to publish
+        required: true
+        type: choice
+        options:
+          - cli
+          - setup-claude-code
+          - setup-openclaw
+      version:
+        description: Exact new npm version (without v prefix)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: feedhive-agent-tools-npm-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm-release
+    steps:
+      - name: Check out reviewed release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.package }}-v${{ inputs.version }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node and npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Verify tag, version, and selected package
+        env:
+          RELEASE_PACKAGE: ${{ inputs.package }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          node -e '
+            const {execFileSync} = require("node:child_process");
+            const {RELEASE_PACKAGE: name, RELEASE_VERSION: version} = process.env;
+            if (!["cli", "setup-claude-code", "setup-openclaw"].includes(name)) throw Error("Unknown package");
+            if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) throw Error("Invalid version");
+            const tag = `${name}-v${version}`;
+            const exact = execFileSync("git", ["describe", "--tags", "--exact-match"], {encoding:"utf8"}).trim();
+            if (exact !== tag) throw Error(`Expected tag ${tag}, found ${exact}`);
+            execFileSync("git", ["merge-base", "--is-ancestor", "HEAD", "origin/main"]);
+          '
+
+      - name: Install and verify source
+        run: |
+          npm ci
+          npm test
+          npm run typecheck
+          npm run lint:code
+          npm run build
+          npm run prepare-package -- prod
+
+      - name: Prepare and inspect selected package
+        env:
+          RELEASE_PACKAGE: ${{ inputs.package }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          node - <<'JS'
+          const fs = require('node:fs');
+          const dirs = {cli:'feedhive-cli', 'setup-claude-code':'claude-code', 'setup-openclaw':'openclaw'};
+          const names = {cli:'@feedhive/cli', 'setup-claude-code':'@feedhive/setup-claude-code', 'setup-openclaw':'@feedhive/setup-openclaw'};
+          const {RELEASE_PACKAGE: chosen, RELEASE_VERSION: version} = process.env;
+          const dir = dirs[chosen];
+          const file = `dist/${dir}/package.json`;
+          const pkg = JSON.parse(fs.readFileSync(file, 'utf8'));
+          if (pkg.name !== names[chosen] || pkg.private) throw Error('Unexpected or private package');
+          pkg.version = version;
+          fs.writeFileSync(file, JSON.stringify(pkg, null, 2) + '\n');
+          fs.copyFileSync('LICENSE', `dist/${dir}/LICENSE`);
+          fs.appendFileSync(process.env.GITHUB_ENV, `PACKAGE_DIR=dist/${dir}\n`);
+          JS
+          case "$RELEASE_PACKAGE" in
+            cli) dir=feedhive-cli ;;
+            setup-claude-code) dir=claude-code ;;
+            setup-openclaw) dir=openclaw ;;
+            *) exit 1 ;;
+          esac
+          (cd "dist/$dir" && npm pack --dry-run)
+
+      - name: Publish selected package
+        working-directory: ${{ env.PACKAGE_DIR }}
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

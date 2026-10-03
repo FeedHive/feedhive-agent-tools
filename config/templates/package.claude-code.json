@@ -1,0 +1,27 @@
+{
+  "name": "@feedhive/setup-claude-code",
+  "version": "0.1.0",
+  "description": "FeedHive Claude Code setup CLI",
+  "main": "./cli.js",
+  "bin": "./cli.js",
+  "keywords": [
+    "feedhive",
+    "cli",
+    "claude-code",
+    "plugin",
+    "api",
+    "automation",
+    "agent"
+  ],
+  "author": "FeedHive",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "homepage": "https://github.com/FeedHive/feedhive-agent-tools#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FeedHive/feedhive-agent-tools.git"
+  }
+}

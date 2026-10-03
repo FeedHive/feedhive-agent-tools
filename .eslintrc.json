@@ -1,0 +1,37 @@
+{
+  "plugins": ["@typescript-eslint", "unused-imports"],
+  "extends": ["plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended"],
+  "overrides": [
+    {
+      "files": ["**/*.ts?(x)"]
+    },
+    {
+      "files": ["artifacts/scripts/**/*.js"],
+      "rules": { "@typescript-eslint/no-var-requires": "off" }
+    }
+  ],
+  "rules": {
+    "react-hooks/exhaustive-deps": "off",
+    "react/no-unescaped-entities": "off",
+    "max-len": ["warn", { "code": 120 }],
+    "no-use-before-define": "off",
+    "import/prefer-default-export": "off",
+    "no-new": "off",
+    "no-plusplus": "off",
+    "no-console": ["warn", { "allow": ["error", "warn", "log"] }],
+    "consistent-return": "off",
+    "jsx-a11y/alt-text": "off",
+    "react/no-children-prop": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/no-array-index-key": "off",
+    "react/prop-types": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "jsx-quotes": ["warn", "prefer-double"],
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "unused-imports/no-unused-imports-ts": "warn",
+    "react/display-name": "off"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@feedhive/cli",
+  "version": "0.1.0",
+  "description": "FeedHive public API command-line interface",
+  "main": "./cli.js",
+  "bin": {
+    "feedhive": "./cli.js"
+  },
+  "keywords": [
+    "feedhive",
+    "cli",
+    "api",
+    "automation",
+    "agent"
+  ],
+  "author": "FeedHive",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "homepage": "https://github.com/FeedHive/feedhive-agent-tools#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FeedHive/feedhive-agent-tools.git"
+  }
+}

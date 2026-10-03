@@ -1,0 +1,25 @@
+{
+  "name": "@feedhive/setup-openclaw",
+  "version": "0.1.0",
+  "description": "FeedHive OpenClaw setup CLI",
+  "main": "./cli.js",
+  "bin": "./cli.js",
+  "keywords": [
+    "feedhive",
+    "cli",
+    "openclaw",
+    "typescript",
+    "webpack"
+  ],
+  "author": "FeedHive",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "homepage": "https://github.com/FeedHive/feedhive-agent-tools#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FeedHive/feedhive-agent-tools.git"
+  }
+}

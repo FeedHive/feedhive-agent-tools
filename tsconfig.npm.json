@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "isolatedModules": false,
+    "resolveJsonModule": false,
+    "esModuleInterop": true,
+    "sourceMap": false,
+    "declaration": false,
+    "module": "ESNext",
+    "target": "es2020",
+    "lib": ["es2020"],
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["src", "config", "declarations.d.ts"],
+  "exclude": ["dist", "build"]
+}
