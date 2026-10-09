@@ -11,8 +11,9 @@ Start with a read-only request, then choose what to create or change. Your agent
 | OpenClaw | `npx @feedhive/setup-openclaw` | A FeedHive skill with bundled API scripts and documentation in your OpenClaw workspace. |
 | Claude Code | `npx @feedhive/setup-claude-code` | A FeedHive social skill with the same API scripts and documentation in your Claude Code skills directory. |
 | Terminal, CI, or another agent that runs commands | `npx @feedhive/cli --help` | JSON-first `feedhive` commands for the public API, without either agent setup package. |
+| Any MCP-compatible client | Connect to `https://mcp.feedhive.com` | FeedHive's hosted MCP server: the public API as MCP tools, nothing to install. |
 
-All three packages are built from this repository. The setup packages install skills; the CLI is a separate package, not a hosted MCP server or a native integration with every AI assistant.
+The three npm packages are built from this repository. The setup packages install skills, and the CLI is a separate package. The hosted MCP server is run by FeedHive and needs no package.
 
 ### OpenClaw
 
@@ -45,6 +46,12 @@ npx @feedhive/cli analytics social <social-id>
 ```
 
 For a permanent CLI installation, run `npm install -g @feedhive/cli` and use `feedhive` in place of `npx @feedhive/cli`. See the [CLI command reference](cli-docs/CLI.md) for arguments, JSON bodies, output, and exit codes.
+
+### Hosted MCP server
+
+FeedHive runs an official remote MCP server at `https://mcp.feedhive.com` (Streamable HTTP). Add it to your MCP client as an HTTP server and send your API key as an `Authorization: Bearer YOUR_FEEDHIVE_API_KEY` header. Keep the key in the client's private credential settings, not in a chat or a URL.
+
+Tools are named `feedhive_{resource}_{action}` and cover posts, labels, media, plan slots, social accounts, analytics, and API status. Your configured automation triggers also appear as `trigger_{id}` tools. Start with a read-only call such as `feedhive_socials_list`. See the [MCP documentation](https://docs.feedhive.com/mcp) for setup and the full tool list.
 
 ## What can you do with FeedHive Agent Tools?
 
@@ -113,7 +120,8 @@ The installers validate the key against the API. Read-only calls such as `social
 - [Bundled script guide](artifacts/scripts/README.md): lower-level Node.js scripts used by the skills.
 - [OpenClaw skill](artifacts/SKILL.md) and [Claude Code skill](claude-code-artifacts/skills/social/SKILL.md): agent instructions and available operations.
 - [Package-specific READMEs](package-readmes/): what each npm package installs or runs.
+- [Hosted MCP server](https://docs.feedhive.com/mcp): connection setup and tool reference for `https://mcp.feedhive.com`.
 
-The repository contains the source for the skills, scripts, CLI, setup packages, and tests. It does not contain the FeedHive server or a hosted OAuth/MCP connection. For a local source build, run `npm ci`, `npm test`, `npm run typecheck`, and `npm run build`. npm releases are manually triggered by maintainers; pushing a commit does not publish a package. To release, run the **Publish selected npm package (manual)** workflow from `main`, select one package, and enter a new npm version. Run it separately for each package; no Git tag is required.
+The repository contains the source for the skills, scripts, CLI, setup packages, and tests. The FeedHive server, including the hosted MCP server, lives outside this repository. For a local source build, run `npm ci`, `npm test`, `npm run typecheck`, and `npm run build`. npm releases are manually triggered by maintainers; pushing a commit does not publish a package. To release, run the **Publish selected npm package (manual)** workflow from `main`, select one package, and enter a new npm version. Run it separately for each package; no Git tag is required.
 
 Licensed under the [MIT License](LICENSE). Please report suspected security issues privately to FeedHive rather than posting credentials in an issue.
