@@ -17,10 +17,10 @@ The three npm packages are built from this repository. The setup packages instal
 
 ### OpenClaw
 
-With Node.js 20+ and `FEEDHIVE_API_KEY` already set in your environment, run this **from the OpenClaw workspace you want to configure**:
+With Node.js 20+, run this **from the OpenClaw workspace you want to configure**, using the API key from your FeedHive account:
 
 ```bash
-npx @feedhive/setup-openclaw
+npx @feedhive/setup-openclaw <your-api-key>
 ```
 
 Setup validates your key, installs the FeedHive skill and its scripts, and stores the key in that workspace's `.env.local`. Then try asking your agent: “List my connected FeedHive accounts and show me my recent posts.” Review the returned data before asking it to create or change content. [Explore the OpenClaw skill](artifacts/SKILL.md).
@@ -30,7 +30,7 @@ Setup validates your key, installs the FeedHive skill and its scripts, and store
 With the same prerequisites, run:
 
 ```bash
-npx @feedhive/setup-claude-code
+npx @feedhive/setup-claude-code <your-api-key>
 ```
 
 Setup validates your key, installs the FeedHive social skill under `~/.claude/skills/feedhive`, and stores the key in `~/.feedhive/agent-tools.env`. Try asking Claude Code: “Show me my FeedHive drafts and connected social accounts.” [Explore the Claude Code skill](claude-code-artifacts/skills/social/SKILL.md).
@@ -109,7 +109,7 @@ You can also create a new scheduled post with `posts create --body-file ./schedu
 
 ## Authentication and safety
 
-Get a public API key from your FeedHive account and set `FEEDHIVE_API_KEY` in your environment before running an installer or the CLI. Do not put a real key directly in a command-line argument: it may end up in shell history or process listings. The CLI also reads the installer credential file at `~/.feedhive/agent-tools.env` and the current workspace's `.env.local`. Keep these files, your workspace, and your backups private; never commit credentials.
+Get a public API key from your FeedHive account and pass it to the installer as shown above. If you leave the argument out, the installers and the CLI read `FEEDHIVE_API_KEY` from your environment. The CLI also reads the installer credential file at `~/.feedhive/agent-tools.env` and the current workspace's `.env.local`. Keep these files, your workspace, and your backups private; never commit credentials.
 
 The installers validate the key against the API. Read-only calls such as `socials list` are a good first check. Creating, updating, scheduling, or deleting resources changes real FeedHive data. Give your agent clear approval boundaries for destructive or hard-to-undo changes.
 

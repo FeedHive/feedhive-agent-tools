@@ -1,11 +1,7 @@
 import { installWithApiToken } from './index';
 
-if (process.argv.length > 2) {
-  console.error('Do not pass an API key on the command line. Set FEEDHIVE_API_KEY in your environment.');
-  process.exit(1);
-}
-
-const apiToken = process.env.FEEDHIVE_API_KEY ?? '';
+// The key can be passed as the first argument (as shown in FeedHive onboarding) or via FEEDHIVE_API_KEY.
+const [, , apiToken = process.env.FEEDHIVE_API_KEY ?? ''] = process.argv;
 
 installWithApiToken(apiToken)
   .then((installation) => {

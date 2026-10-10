@@ -8,13 +8,13 @@ Node.js 20+, an OpenClaw workspace, and a FeedHive public API key from your Feed
 
 ## Install
 
-From the workspace you want to configure, set `FEEDHIVE_API_KEY` in your environment, then run:
+From the workspace you want to configure, run this with the API key from your FeedHive account (or leave it out to use `FEEDHIVE_API_KEY` from your environment):
 
 ```bash
-npx @feedhive/setup-openclaw
+npx @feedhive/setup-openclaw <your-api-key>
 ```
 
-Do not pass the key as a command-line argument. Setup validates it, stores it in the workspace `.env.local`, and installs the `feedhive` skill in an available skills directory (preferring an existing workspace skills directory). Keep your workspace and backups private. Re-running setup may replace an existing `feedhive` skill.
+Setup validates the key, stores it in the workspace `.env.local`, and installs the `feedhive` skill in an available skills directory (preferring an existing workspace skills directory). Keep your workspace and backups private. Re-running setup may replace an existing `feedhive` skill.
 
 Once installed, ask your OpenClaw agent to list your FeedHive posts or connected social accounts before making changes. The skill bundles a [script guide](artifacts/scripts/README.md) and [API reference](artifacts/docs/api.md). Writes affect your real FeedHive account; review them before running.
 

@@ -8,13 +8,13 @@ Node.js 20+, Claude Code, and a FeedHive public API key from your FeedHive accou
 
 ## Install
 
-Set `FEEDHIVE_API_KEY` in your environment, then run:
+Run this with the API key from your FeedHive account (or leave it out to use `FEEDHIVE_API_KEY` from your environment):
 
 ```bash
-npx @feedhive/setup-claude-code
+npx @feedhive/setup-claude-code <your-api-key>
 ```
 
-Do not pass the key as a command-line argument. Setup validates it, stores it in `~/.feedhive/agent-tools.env`, and installs the skill bundle in `~/.claude/skills/feedhive`. Keep the credential file and backups private. Re-running setup may replace an existing FeedHive skill bundle.
+Setup validates the key, stores it in `~/.feedhive/agent-tools.env`, and installs the skill bundle in `~/.claude/skills/feedhive`. Keep the credential file and backups private. Re-running setup may replace an existing FeedHive skill bundle.
 
 Use the FeedHive social skill in Claude Code to inspect connected accounts or list posts before editing content. The bundle includes a [script guide](artifacts/skills/social/scripts/README.md) and [API reference](artifacts/skills/social/docs/api.md). Writes affect your real FeedHive account.
 
